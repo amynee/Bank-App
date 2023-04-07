@@ -17,6 +17,7 @@ public class Contact {
     private Integer id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
     private String iban;
     @ManyToOne
