@@ -1,0 +1,29 @@
+package com.example.Bank.transaction;
+
+import com.example.Bank.user.User;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TransactionMapper {
+    public Transaction toTransaction(TransactionRequest request) {
+        return Transaction.builder()
+                .amount(request.getAmount())
+                .destinationIban(request.getDestinationIban())
+                .type(request.getType())
+                .user(
+                        User.builder()
+                            .id(request.getUserId())
+                            .build()
+                )
+                .build();
+    }
+
+    public TransactionResponse toResponse(Transaction request) {
+        return TransactionResponse.builder()
+                .amount(request.getAmount())
+                .destinationIban(request.getDestinationIban())
+                .type(request.getType())
+                .transactionDate(request.getTransactionDate())
+                .build();
+    }
+}
