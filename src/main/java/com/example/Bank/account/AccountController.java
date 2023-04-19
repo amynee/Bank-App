@@ -17,6 +17,6 @@ public class AccountController {
     public Integer save (
             @RequestBody AccountRequest account
     ) {
-        return service.save(account);
+        return service.create(account);
     }
 }

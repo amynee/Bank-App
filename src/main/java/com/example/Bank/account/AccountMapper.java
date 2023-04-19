@@ -8,7 +8,6 @@ public class AccountMapper {
 
     public Account toAccount(AccountRequest request) {
        return Account.builder()
-                .iban(request.getIban())
                 .user(
                         User.builder()
                                 .id(request.getUserId())
