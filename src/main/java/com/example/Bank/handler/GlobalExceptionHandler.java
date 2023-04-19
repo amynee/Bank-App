@@ -39,4 +39,13 @@ public class GlobalExceptionHandler {
                 .errorMsg(exp.getMessage())
                 .build();
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ExceptionResponse handle() {
+        return ExceptionResponse
+                .builder()
+                .errorMsg("Oups, an error has occured. Please contact admin")
+                .build();
+    }
 }
