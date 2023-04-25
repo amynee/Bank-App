@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 public class AccountMapper {
 
     public Account toAccount(AccountRequest request) {
+        if (request == null) {
+            return new Account();
+        }
        return Account.builder()
                 .user(
                         User.builder()
