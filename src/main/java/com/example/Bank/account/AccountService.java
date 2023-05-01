@@ -28,9 +28,7 @@ public class AccountService {
             throw new OperationNonPermittedException("The selected user has an account");
         }
         account.setIban(generateRandomIban());
-        return repository.save(
-                mapper.toAccount(accountRequest)
-        ).getId();
+        return repository.save(account).getId();
     }
 
     @Transactional
