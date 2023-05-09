@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -49,5 +50,21 @@ public class UserController {
             @PathVariable("user-id") Integer id
     ) {
         return service.invaildateAccount(id);
+    }
+
+    @GetMapping("/transactions/highest/{user-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BigDecimal getHighestTransfert(
+            @PathVariable("user-id") Integer userId
+    ) {
+        return  service.highestTransfer(userId);
+    }
+
+    @GetMapping("/transactions/lowest/{user-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public BigDecimal getHighestDeposit(
+            @PathVariable("user-id") Integer userId
+    ) {
+        return  service.highestDeposit(userId);
     }
 }
