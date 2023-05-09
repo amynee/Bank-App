@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "3e9ed939-a97d-4d74-8f64-4ff2649152d7",
+		"name": "Bank-QA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18901879"
+	},
+	"item": [
+		{
+			"name": "Create user account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 -> User is created\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"current_user\", pm.response.text());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basePath}}/api/v1/users",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate user account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 202 -> Bank account created\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{basePath}}/api/v1/users/validate/{{current_user}}",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"validate",
+						"{{current_user}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check user bank account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Should have an account\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.iban).to.have.length.greaterThan(0);\r",
+							"    pm.environment.set(\"current_user_iban\", responseJson.iban);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.iban).to.include(\"TN\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"User is active(has an active account)\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.active).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{basePath}}/api/v1/users/{{current_user}}",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"{{current_user}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User can create a new contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 --> contact created\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.environment.set(\"last_created_contact\", pm.response.text());\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"iban\": \"{{$randomBankAccountIban}}\",\r\n    \"userId\": \"{{current_user}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basePath}}/api/v1/contacts",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get last created contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 --> Contact exists\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.environment.set(\"last_created_contact_iban\", responseJson.iban);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{basePath}}/api/v1/contacts/{{last_created_contact}}",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"contacts",
+						"{{last_created_contact}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit money to bank account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 --> Deposit money to bank account\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 3000.0,\r\n    \"destinationIban\": \"{{current_user_iban}}\",\r\n    \"type\": \"DEPOSIT\",\r\n    \"userId\": {{current_user}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basePath}}/api/v1/transactions",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer money to last created contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 --> Transfert done to last created account\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 200.0,\r\n    \"destinationIban\": \"{{current_user_iban}}\",\r\n    \"type\": \"TRANSFERT\",\r\n    \"userId\": {{current_user}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basePath}}/api/v1/transactions",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer money to random account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 -> Transfert done to a random account\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 150.0,\r\n    \"destinationIban\": \"{{$randomBankAccountIban}}\",\r\n    \"type\": \"TRANSFERT\",\r\n    \"userId\": {{current_user}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basePath}}/api/v1/transactions",
+					"host": [
+						"{{basePath}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
