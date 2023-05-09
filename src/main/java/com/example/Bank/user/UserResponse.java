@@ -17,5 +17,7 @@ public class UserResponse {
 
     private String iban;
 
+    private String email;
+
     private boolean active;
 }

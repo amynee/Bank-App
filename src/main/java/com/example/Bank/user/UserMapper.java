@@ -20,7 +20,8 @@ public class UserMapper {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .active(user.isActive())
-                .iban(user.getAccount().getIban())
+                .email(user.getEmail())
+                .iban(user.getAccount()== null ? null : user.getAccount().getIban())
                 .build();
     }
 }
