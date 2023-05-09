@@ -19,11 +19,11 @@ public class UserService {
     private final UserRepository repository;
     private final ObjectsValidator<UserRequest> validator;
     private final UserMapper mapper;
-    private AccountService accountService;
+    private final AccountService accountService;
 
     public Integer create(UserRequest request) {
         validator.validate(request);
-        var user = mapper.toUser((request));
+        var user = mapper.toUser(request);
         user.setActive(false);
         return repository.save(user).getId();
     }
