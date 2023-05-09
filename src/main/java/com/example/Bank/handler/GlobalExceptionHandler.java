@@ -3,12 +3,14 @@ package com.example.Bank.handler;
 import com.example.Bank.exception.ObjectValidationException;
 import com.example.Bank.exception.OperationNonPermittedException;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ObjectValidationException.class)
@@ -42,7 +44,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionResponse handle() {
+    public ExceptionResponse handle(Exception exp) {
+        log.error("Error occured", exp);
         return ExceptionResponse
                 .builder()
                 .errorMsg("Oups, an error has occured. Please contact admin")
