@@ -15,3 +15,6 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 server:
   port: 8886
+security:
+  jwt:
+    secret-key: s5v8y/B?E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfUjXn2r5u7x!A%D*G-KaPdSgVk
