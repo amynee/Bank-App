@@ -8,7 +8,7 @@ spring:
     database: MYSQL
     show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -17,4 +17,4 @@ server:
   port: 8886
 security:
   jwt:
-    secret-key: s5v8y/B?E(H+MbQeThWmZq3t6w9z$C&F)J@NcRfUjXn2r5u7x!A%D*G-KaPdSgVk
+    secret-key: 68576D5A7134743777217A24432646294A404E635266556A586E3272357538782F413F442A472D4B6150645367566B59703373367639792442264529482B4D62
