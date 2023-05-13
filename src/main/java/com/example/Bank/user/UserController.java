@@ -2,6 +2,9 @@ package com.example.Bank.user;
 
 import com.example.Bank.contact.ContactRequest;
 import com.example.Bank.contact.ContactResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +16,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Tag(name = "Users")
 public class UserController {
 
     private final UserService service;
 
+    @Operation(
+            description = "Save user to database",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "user sucessfully created"),
+                    @ApiResponse(responseCode = "403", description = "Missing or invalid JWTtoken")
+            }
+    )
     @PostMapping
     public Integer save (
             @RequestBody UserRequest user
@@ -29,6 +40,13 @@ public class UserController {
         return ResponseEntity.ok(service.findAll());
     }
 
+    @Operation(
+            description = "Find user by id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "user exist"),
+                    @ApiResponse(responseCode = "403", description = "Missing or invalid JWTtoken")
+            }
+    )
     @GetMapping("/{user-id}")
     public ResponseEntity<UserResponse> findById(
             @PathVariable("user-id") Integer id
