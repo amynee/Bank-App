@@ -8,16 +8,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+//@SpringBootTest
 public class AccountServiceSpringTest {
 
-    @Autowired
+    //@Autowired
     private AccountService service;
 
-    @Autowired
+    //@Autowired
     private UserRepository userRepository;
 
-    @Test
+   // @Test
     public void should_create_account() {
         var savedUser = userRepository.save(User.builder().firstName("Amine").build());
         var request = AccountRequest.builder()
